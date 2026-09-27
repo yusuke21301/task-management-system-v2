@@ -1,0 +1,89 @@
+services:
+
+  # ==========================================================
+  # PostgreSQL
+  # ==========================================================
+  db:
+    image: postgres:16
+
+    container_name: production-progress-db
+
+    environment:
+      POSTGRES_DB: production_progress
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # PostgreSQLが接続可能な状態になっているか確認する。
+    # APIをDBより先に起動してしまう問題を防ぐために使用する。
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d production_progress"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    restart: unless-stopped
+
+
+  # ==========================================================
+  # ASP.NET Core Web API
+  # ==========================================================
+  api:
+
+    # 同じフォルダにあるDockerfileを使って
+    # APIのDockerイメージを作成する。
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: production-progress-api
+
+    environment:
+
+      # Developmentにしておくことで、
+      # 開発環境用の設定やSwaggerを利用する。
+      ASPNETCORE_ENVIRONMENT: Development
+
+      # appsettings.json の
+      # ConnectionStrings:DefaultConnection を上書きする。
+      #
+      # Dockerコンテナ間通信ではlocalhostではなく、
+      # Composeのサービス名「db」をホスト名として使用する。
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=production_progress;Username=postgres;Password=postgres"
+
+      # JWT設定
+      # 「__」はASP.NET Coreでは「:」として扱われる
+      Jwt__Key: "ProductionProgress-Development-Jwt-Key-2026-0123456789"
+      Jwt__Issuer: "ProductionProgress.Api"
+      Jwt__Audience: "ProductionProgress.Client"
+      Jwt__ExpirationMinutes: "60"
+      
+      # 初期管理者
+      InitialAdmin__Username: "admin"
+      InitialAdmin__Password: "admin"
+
+    # PCの8080番ポート
+    #      ↓
+    # APIコンテナの8080番ポート
+    ports:
+      - "8080:8080"
+
+    # PostgreSQLが起動しただけではなく、
+    # 接続可能なHealthy状態になってからAPIを起動する。
+    depends_on:
+      db:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+
+# ============================================================
+# PostgreSQLデータ保存用Volume
+# ============================================================
+volumes:
+  postgres_data:

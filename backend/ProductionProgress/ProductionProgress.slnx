@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ProductionProgress.Api/ProductionProgress.Api.csproj" />
+  <Project Path="ProductionProgress.Application/ProductionProgress.Application.csproj" />
+  <Project Path="ProductionProgress.Domain/ProductionProgress.Domain.csproj" />
+  <Project Path="ProductionProgress.Infrastructure/ProductionProgress.Infrastructure.csproj" />
+</Solution>
