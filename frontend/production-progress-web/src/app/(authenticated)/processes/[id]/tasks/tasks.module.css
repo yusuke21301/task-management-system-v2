@@ -1,0 +1,555 @@
+/* =========================================
+   画面全体
+   ========================================= */
+.container {
+  max-width: 1100px;
+
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* =========================================
+   画面上部
+   ========================================= */
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px;
+
+  font-size: 28px;
+}
+
+.description {
+  margin: 0;
+
+  color: #666;
+}
+
+/* =========================================
+   テーブルを囲む領域
+   ========================================= */
+.tableWrapper {
+  /* 画面が狭い場合は横スクロールさせる */
+  overflow-x: auto;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* =========================================
+   作業一覧テーブル
+   ========================================= */
+.table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background-color: white;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+
+  border-bottom: 1px solid #eee;
+
+  text-align: left;
+
+  white-space: nowrap;
+}
+
+/* テーブルヘッダー */
+.table th {
+  background-color: #f5f5f5;
+
+  font-weight: bold;
+}
+
+/* 最後の行には下線を表示しない */
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================================
+   ステータス表示
+   ========================================= */
+.statusBadge {
+  display: inline-block;
+
+  min-width: 72px;
+
+  padding: 5px 10px;
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 未着手 */
+.notStarted {
+  background-color: #eeeeee;
+  color: #555555;
+}
+
+/* 作業中 */
+.inProgress {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* 完了 */
+.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* =========================================
+   ステータス変更ボタン
+   ========================================= */
+.buttonGroup {
+  display: flex;
+
+  gap: 6px;
+
+  flex-wrap: nowrap;
+}
+
+.statusButton {
+  padding: 7px 12px;
+
+  border: 1px solid #bbb;
+  border-radius: 4px;
+
+  background-color: white;
+
+  cursor: pointer;
+}
+
+/* マウスを乗せたとき */
+.statusButton:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+/* 現在のステータスのボタン */
+.statusButton:disabled {
+  background-color: #ddd;
+
+  color: #777;
+
+  cursor: not-allowed;
+}
+
+/* =========================================
+   下部リンク
+   ========================================= */
+.footer {
+  margin-top: 24px;
+}
+
+/* =========================================
+   入力フォーム
+   ========================================= */
+.form {
+  max-width: 600px;
+
+  padding: 24px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  background-color: #fff;
+}
+
+/* =========================================
+   フォーム1項目
+   ========================================= */
+.formGroup {
+  margin-bottom: 24px;
+}
+
+/* =========================================
+   項目名
+   ========================================= */
+.label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-weight: 600;
+}
+
+/* =========================================
+   入力欄
+   ========================================= */
+.input {
+  box-sizing: border-box;
+
+  width: 100%;
+  padding: 10px 12px;
+
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  font-size: 16px;
+}
+
+.input:focus {
+  outline: 2px solid #333;
+  outline-offset: 1px;
+}
+
+/* =========================================
+   補足説明
+   ========================================= */
+.helpText {
+  margin: 6px 0 0;
+
+  color: #666;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   ボタン領域
+   ========================================= */
+.formActions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 32px;
+}
+
+/* =========================================
+   登録ボタン
+   ========================================= */
+.primaryButton {
+  padding: 10px 20px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #222;
+  color: #fff;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.primaryButton:hover {
+  opacity: 0.85;
+}
+
+/* =========================================
+   キャンセル
+   ========================================= */
+.secondaryButton {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 10px 20px;
+
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  color: #333;
+  text-decoration: none;
+}
+
+.secondaryButton:hover {
+  background-color: #f5f5f5;
+}
+
+/* =========================================
+   編集ボタン
+   ========================================= */
+.editLink {
+  display: inline-block;
+
+  padding: 6px 12px;
+
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  background-color: #fff;
+
+  color: #333;
+  text-decoration: none;
+
+  white-space: nowrap;
+}
+
+.editLink:hover {
+  background-color: #f5f5f5;
+}
+
+/* =========================================
+   操作ボタン領域
+   ========================================= */
+.operationGroup {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   削除ボタン
+   ========================================= */
+.deleteButton {
+  padding: 6px 12px;
+
+  border: 1px solid #c62828;
+  border-radius: 6px;
+
+  background-color: #fff;
+
+  color: #c62828;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #fff5f5;
+}
+
+/* =========================================
+   削除確認ダイアログの背景
+   ========================================= */
+.dialogOverlay {
+  position: fixed;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  background-color:
+    rgba(0, 0, 0, 0.4);
+
+  z-index: 1000;
+}
+
+/* =========================================
+   削除確認ダイアログの背景
+   ========================================= */
+.dialogOverlay {
+  /*
+   * 画面全体に固定する。
+   *
+   * position: fixed が効くことで、
+   * テーブルの中ではなく画面全体に表示される。
+   */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  /* 背景を暗くする */
+  background-color: rgba(0, 0, 0, 0.45);
+
+  /*
+   * テーブルなど他の要素より
+   * 手前に表示する。
+   */
+  z-index: 9999;
+}
+
+/* =========================================
+   削除確認ダイアログ本体
+   ========================================= */
+.dialog {
+  box-sizing: border-box;
+
+  width: 100%;
+  max-width: 420px;
+
+  padding: 24px;
+
+  border-radius: 10px;
+
+  background-color: #fff;
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================
+   ダイアログタイトル
+   ========================================= */
+.dialogTitle {
+  margin: 0 0 16px;
+
+  font-size: 20px;
+}
+
+/* =========================================
+   ダイアログ本文
+   ========================================= */
+.dialogMessage {
+  margin: 0 0 8px;
+
+  line-height: 1.6;
+}
+
+/* =========================================
+   注意メッセージ
+   ========================================= */
+.dialogWarning {
+  margin: 0;
+
+  color: #c62828;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   ダイアログボタン領域
+   ========================================= */
+.dialogActions {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 24px;
+}
+
+/* =========================================
+   画面上部の操作領域
+   ========================================= */
+.topActions {
+  display: flex;
+
+  align-items: center;
+
+  /* 作業一覧との間に余白を作る */
+  margin-bottom: 20px;
+}
+
+/* =========================================
+   タブレット・スマートフォン表示
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* -----------------------------------------
+     画面全体
+     ----------------------------------------- */
+  .container {
+    /* 画面幅いっぱいを使用する */
+    width: 100%;
+
+    /* paddingをwidthの内側に含める */
+    box-sizing: border-box;
+
+    padding: 20px 16px;
+
+    /*
+      子要素の横幅によって
+      container自身が広がらないようにする
+    */
+    min-width: 0;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  /* -----------------------------------------
+     横スクロール領域
+     ----------------------------------------- */
+  .tableWrapper {
+    /*
+      iPhone 16なら
+      393px - 左右16pxずつ = 361px
+      にスクロール領域を固定する
+    */
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+
+    /*
+      中のテーブルだけを横スクロールさせる
+    */
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    display: block;
+
+    box-sizing: border-box;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* -----------------------------------------
+     テーブル
+     ----------------------------------------- */
+  .table {
+    /*
+      Wrapperは約361px、
+      テーブルは720pxにする。
+
+      これによって確実に
+      「Wrapperよりテーブルが大きい」
+      状態を作る。
+    */
+    width: 720px;
+    min-width: 720px;
+    max-width: none;
+
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px 12px;
+
+    white-space: nowrap;
+  }
+
+  /* -----------------------------------------
+     ステータス変更ボタン
+     ----------------------------------------- */
+  .buttonGroup {
+    display: flex;
+
+    gap: 4px;
+
+    flex-wrap: nowrap;
+  }
+
+  .statusButton {
+    padding: 7px 10px;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+  }
+}

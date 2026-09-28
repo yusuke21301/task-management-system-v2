@@ -1,0 +1,161 @@
+/* =========================================
+   画面全体
+   ========================================= */
+.container {
+  max-width: 1100px;
+
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* =========================================
+   画面上部
+   ========================================= */
+.header {
+  margin-bottom: 32px;
+}
+
+.title {
+  margin: 0 0 8px;
+
+  font-size: 30px;
+}
+
+.description {
+  margin: 0;
+
+  color: #666;
+}
+
+/* =========================================
+   サマリーカード一覧
+   ========================================= */
+.summaryGrid {
+  display: grid;
+
+  /* 画面幅によってカード数を自動調整する */
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(200px, 1fr)
+    );
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+}
+
+/* =========================================
+   サマリーカード
+   ========================================= */
+.summaryCard {
+  padding: 24px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  background-color: white;
+}
+
+/* カードの項目名 */
+.summaryLabel {
+  margin-bottom: 8px;
+
+  color: #666;
+
+  font-size: 14px;
+}
+
+/* カードの数値 */
+.summaryValue {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* =========================================
+   メニュー
+   ========================================= */
+.menu {
+  margin-bottom: 32px;
+}
+
+/* 工程進捗画面へのリンク */
+.primaryLink {
+  display: inline-block;
+
+  padding: 12px 20px;
+
+  border-radius: 6px;
+
+  background-color: #333;
+
+  color: white;
+  text-decoration: none;
+}
+
+/* マウスを乗せたとき */
+.primaryLink:hover {
+  opacity: 0.85;
+}
+
+/* =========================================
+   ログアウト
+   ========================================= */
+.logoutButton {
+  padding: 10px 18px;
+
+  border: 1px solid #bbb;
+  border-radius: 6px;
+
+  background-color: white;
+
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background-color: #f5f5f5;
+}
+
+/* =========================================
+   スマートフォン表示
+   ========================================= */
+@media (max-width: 600px) {
+
+  /* 画面左右の余白を少し小さくする */
+  .container {
+    padding: 20px 16px;
+  }
+
+  /* タイトルを少し小さくする */
+  .title {
+    font-size: 24px;
+  }
+
+  /* サマリーカードを1列にする */
+  .summaryGrid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  /* カード内部の余白を少し小さくする */
+  .summaryCard {
+    padding: 18px;
+  }
+
+  /* 数値を少し小さくする */
+  .summaryValue {
+    font-size: 28px;
+  }
+
+  /* 工程進捗ボタンを横幅いっぱいにする */
+  .primaryLink {
+    display: block;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    text-align: center;
+  }
+}

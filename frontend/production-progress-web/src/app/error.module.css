@@ -1,0 +1,76 @@
+/* =========================================
+   エラー画面全体
+   ========================================= */
+.container {
+  min-height: 70vh;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 24px;
+}
+
+/* =========================================
+   エラーカード
+   ========================================= */
+.card {
+  width: 100%;
+  max-width: 520px;
+
+  padding: 32px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  background-color: white;
+
+  text-align: center;
+}
+
+/* =========================================
+   タイトル
+   ========================================= */
+.title {
+  margin-top: 0;
+  margin-bottom: 20px;
+
+  font-size: 24px;
+}
+
+/* =========================================
+   説明文
+   ========================================= */
+.message {
+  margin: 8px 0;
+
+  color: #666;
+
+  line-height: 1.6;
+}
+
+/* =========================================
+   再試行ボタン
+   ========================================= */
+.retryButton {
+  margin-top: 24px;
+
+  padding: 10px 20px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #333;
+
+  color: white;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+/* マウスを乗せた場合 */
+.retryButton:hover {
+  opacity: 0.85;
+}
