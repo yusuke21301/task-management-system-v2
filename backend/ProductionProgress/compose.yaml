@@ -62,7 +62,7 @@ services:
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
       Jwt__ExpirationMinutes: ${JWT_EXPIRATION_MINUTES}
-      
+
       # 初期管理者
       InitialAdmin__Username: ${INITIAL_ADMIN_USERNAME}
       InitialAdmin__Password: ${INITIAL_ADMIN_PASSWORD}
@@ -78,6 +78,46 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+    restart: unless-stopped
+
+
+  # ==========================================================
+  # Next.js
+  # ==========================================================
+  frontend:
+
+    # Next.jsプロジェクトフォルダを
+    # Dockerのビルドコンテキストにする。
+    build:
+      context: ../../frontend/production-progress-web
+      dockerfile: Dockerfile
+
+    container_name: production-progress-frontend
+
+    environment:
+
+      # Next.jsサーバーからASP.NET Core APIへ接続する。
+      #
+      # Dockerコンテナ間通信ではlocalhostではなく、
+      # Composeのサービス名「api」を使用する。
+      API_BASE_URL: http://api:8080
+
+      # Next.jsを本番モードで実行する。
+      NODE_ENV: production
+
+    # PCの3000番ポート
+    #      ↓
+    # Next.jsコンテナの3000番ポート
+    ports:
+      - "3000:3000"
+
+    # APIコンテナを先に起動する。
+    #
+    # ここではAPIにhealthcheckを設定していないので、
+    # 「コンテナが起動した」ことだけを条件にする。
+    depends_on:
+      - api
 
     restart: unless-stopped
 
