@@ -3,4 +3,6 @@
   <Project Path="ProductionProgress.Application/ProductionProgress.Application.csproj" />
   <Project Path="ProductionProgress.Domain/ProductionProgress.Domain.csproj" />
   <Project Path="ProductionProgress.Infrastructure/ProductionProgress.Infrastructure.csproj" />
+  <Project Path="ProductionProgress.IntegrationTests/ProductionProgress.IntegrationTests.csproj" Id="2a37328e-757c-4109-ab48-5f4ade125f23" />
+  <Project Path="ProductionProgress.Tests/ProductionProgress.Tests.csproj" Id="19c14f7f-6466-4f68-9353-9c26aa7cac3c" />
 </Solution>

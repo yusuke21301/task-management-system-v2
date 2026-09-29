@@ -56,6 +56,13 @@ COPY --from=deps /app/node_modules ./node_modules
 # node_modulesや.nextなどはコピーされない。
 COPY . .
 
+# NEXT_PUBLIC_* はブラウザ側で使用されるため、
+# Next.jsのビルド時に値を渡す必要がある。
+ARG NEXT_PUBLIC_API_URL
+
+# npm run build から参照できる環境変数にする。
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 
 # ============================================================
 # 7. Next.jsを本番用にビルド

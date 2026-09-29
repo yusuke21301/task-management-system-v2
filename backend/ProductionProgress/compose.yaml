@@ -92,6 +92,10 @@ services:
     build:
       context: ../../frontend/production-progress-web
       dockerfile: Dockerfile
+      args:
+        # ブラウザからAPIへアクセスするためのURL。
+        # NEXT_PUBLIC_*なのでNext.jsのビルド時に渡す。
+        NEXT_PUBLIC_API_URL: http://localhost:8080
 
     container_name: production-progress-frontend
 

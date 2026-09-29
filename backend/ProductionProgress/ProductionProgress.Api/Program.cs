@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using ProductionProgress.Api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,22 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(
             new JsonStringEnumConverter());
     });
+
+// ------------------------------------------------------------
+// SignalRを使用できるようにする。
+// ------------------------------------------------------------
+builder.Services.AddSignalR();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 // ------------------------------------------------------------
 // パスワードのハッシュ化・検証
@@ -104,6 +121,30 @@ builder.Services
                 // 有効期限を厳密に判定するため、
                 // デフォルトの猶予時間を0にします。
                 ClockSkew = TimeSpan.Zero
+            };
+
+            // SignalR接続時のJWT取得方法を追加する。
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var request = context.HttpContext.Request;
+
+                    // SignalR Hubへの通信の場合だけ、
+                    // HttpOnly Cookieに保存されているJWTを使用する。
+                    if (request.Path.StartsWithSegments("/hubs/progress"))
+                    {
+                        var accessToken =
+                            request.Cookies["access_token"];
+
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                }
             };
     });
 
@@ -246,6 +287,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// CORSを適用する
+// MapControllersやMapHubより前に配置する
+app.UseCors("Frontend");
+
 // JWTからユーザーを認証する
 app.UseAuthentication();
 
@@ -253,6 +298,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// SignalR Hubのエンドポイントを登録する。
+// Next.jsは後でこのURLへSignalR接続する。
+app.MapHub<ProgressHub>("/hubs/progress");
 
 app.Run();
 
@@ -265,3 +314,9 @@ app.Run();
 app.MapControllers();
 
 app.Run();
+
+// Integration TestからProgramクラスを参照できるようにする。
+// WebApplicationFactory<Program>でAPIを起動するために必要。
+public partial class Program
+{
+}

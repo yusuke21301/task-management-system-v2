@@ -1,4 +1,5 @@
 import AppHeader from "./app-header";
+import SignalRConnection from "../../components/SignalRConnection";
 
 /**
  * ログイン後画面の共通レイアウト。
@@ -16,6 +17,8 @@ export default function AuthenticatedLayout({
       {/* 共通ヘッダー */}
       <AppHeader />
 
+      {/* ASP.NET CoreのSignalR Hubへ接続する */}
+        <SignalRConnection />
       {/* 各画面 */}
       {children}
     </>

@@ -5,6 +5,8 @@ using ProductionProgress.Application.Dtos.Common;
 using ProductionProgress.Application.Dtos.Tasks;
 using ProductionProgress.Application.Services;
 using ProductionProgress.Domain.Enums;
+using Microsoft.AspNetCore.SignalR;
+using ProductionProgress.Api.Hubs;
 
 namespace ProductionProgress.Api.Controllers;
 
@@ -20,13 +22,17 @@ namespace ProductionProgress.Api.Controllers;
 public class TasksController : ControllerBase
 {
     private readonly ITaskService _taskService;
+    private readonly IHubContext<ProgressHub> _hubContext;
 
     /// <summary>
     /// DIによってTaskServiceを受け取る。
     /// </summary>
-    public TasksController(ITaskService taskService)
+    public TasksController(
+    ITaskService taskService,
+    IHubContext<ProgressHub> hubContext)
     {
         _taskService = taskService;
+        _hubContext = hubContext;
     }
 
     /// <summary>
@@ -140,6 +146,11 @@ public class TasksController : ControllerBase
             var createdTask =
                 await _taskService.CreateTaskAsync(request);
 
+            // DBへの登録が成功したので、
+            // 接続しているすべてのSignalRクライアントへ
+            // 「Taskが変更された」と通知する。
+            await _hubContext.Clients.All.SendAsync("TasksChanged");
+
             // HTTP 201 Createdを返す。
             //
             // 200 OKではなく201 Createdにすることで、
@@ -186,6 +197,10 @@ public class TasksController : ControllerBase
             return NotFound();
         }
 
+        // DB更新が成功した後で通知する。
+        await _hubContext.Clients.All.SendAsync("TasksChanged");
+
+
         // 更新後のデータをHTTP 200 OKで返す。
         return Ok(updatedTask);
     }
@@ -207,6 +222,9 @@ public class TasksController : ControllerBase
         {
             return NotFound();
         }
+
+        // DB削除が成功した後で通知する。
+        await _hubContext.Clients.All.SendAsync("TasksChanged");
 
         // 削除に成功した場合は
         // HTTP 204 No Contentを返す。
