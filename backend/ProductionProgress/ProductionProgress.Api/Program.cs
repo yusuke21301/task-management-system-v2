@@ -47,7 +47,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy =>
     {
         policy
-            .WithOrigins("frontendUrl")
+            .WithOrigins(frontendUrl)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -309,16 +309,6 @@ app.MapControllers();
 // SignalR Hubのエンドポイントを登録する。
 // Next.jsは後でこのURLへSignalR接続する。
 app.MapHub<ProgressHub>("/hubs/progress");
-
-app.Run();
-
-// ------------------------------------------------------------
-// HTTPアクセスをHTTPSへリダイレクトする。
-// 開発中はSwaggerからHTTP APIを直接確認するため一旦無効化する。
-// ------------------------------------------------------------
-// app.UseHttpsRedirection();
-
-app.MapControllers();
 
 app.Run();
 
