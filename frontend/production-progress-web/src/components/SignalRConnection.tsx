@@ -38,8 +38,25 @@ export default function SignalRConnection() {
     const connection = new HubConnectionBuilder()
       // ASP.NET Core側で設定したHubのURL
       .withUrl(`${apiUrl}/hubs/progress`, {
-        // SignalR接続時にCookieを送信する。
-        withCredentials: true,
+        // SignalR接続時にJWTを取得してBearer認証に使用する。
+        accessTokenFactory: async () => {
+          const response = await fetch(
+            '/api/signalr-token',
+            {
+              cache: 'no-store',
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              'SignalR用アクセストークンを取得できませんでした。'
+            );
+          }
+
+          const data = await response.json();
+
+          return data.accessToken;
+        },
       })
 
       // SignalRの通信状況をブラウザのコンソールに表示する。

@@ -34,12 +34,20 @@ builder.Services.AddControllers()
 // SignalRを使用できるようにする。
 // ------------------------------------------------------------
 builder.Services.AddSignalR();
+
+// 本番環境ではRenderの環境変数 FrontendUrl から
+// VercelのURLを取得する。
+// ローカルではlocalhost:3000を使用する。
+var frontendUrl =
+    builder.Configuration["FrontendUrl"]
+    ?? "http://localhost:3000";
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
     {
         policy
-            .WithOrigins("http://localhost:3000")
+            .WithOrigins("frontendUrl")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -123,24 +131,23 @@ builder.Services
                 ClockSkew = TimeSpan.Zero
             };
 
-            // SignalR接続時のJWT取得方法を追加する。
+            // SignalR接続時のJWT取得方法を設定する。
             options.Events = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
                 {
                     var request = context.HttpContext.Request;
 
-                    // SignalR Hubへの通信の場合だけ、
-                    // HttpOnly Cookieに保存されているJWTを使用する。
-                    if (request.Path.StartsWithSegments("/hubs/progress"))
-                    {
-                        var accessToken =
-                            request.Cookies["access_token"];
+                    // SignalR JavaScriptクライアントは、
+                    // WebSocket接続時にJWTをaccess_tokenとして送信する。
+                    var accessToken =
+                        request.Query["access_token"];
 
-                        if (!string.IsNullOrEmpty(accessToken))
-                        {
-                            context.Token = accessToken;
-                        }
+                    // SignalR Hubへの通信だけを対象にする。
+                    if (!string.IsNullOrEmpty(accessToken) &&
+                        request.Path.StartsWithSegments("/hubs/progress"))
+                    {
+                        context.Token = accessToken;
                     }
 
                     return Task.CompletedTask;
